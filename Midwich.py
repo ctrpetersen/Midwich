@@ -23,7 +23,6 @@ def random_color():
 #   678
 #Read nearby pixels
 def average_color_of_px(x,y):
-    nearby_pixels = []
     c1 = game_display.get_at((x-1,y+1))[:3]
     c2 = game_display.get_at((x,y+1))[:3]
     c3 = game_display.get_at((x+1,y+1))[:3]
@@ -32,21 +31,41 @@ def average_color_of_px(x,y):
     c6 = game_display.get_at((x-1,y-1))[:3]
     c7 = game_display.get_at((x,y-1))[:3]
     c8 = game_display.get_at((x+1,y-1))[:3]
-    nearby_pixels += c1,c2,c3,c4,c5,c6,c7,c8
 
-    avg_red   = 0
-    avg_green = 0
-    avg_blue  = 0
-    for r in nearby_pixels:
-        avg_red   += r[0]
-        avg_green += r[1]
-        avg_blue  += r[2]
-    avg_red   = int(avg_red   / len(nearby_pixels))
-    avg_green = int(avg_green / len(nearby_pixels))
-    avg_blue  = int(avg_blue  / len(nearby_pixels))
+    nearby_pixels = []
+    if c1 != white:
+        nearby_pixels += c1
+    if c2 != white:
+        nearby_pixels += c2
+    if c3 != white:
+        nearby_pixels += c3
+    if c4 != white:
+        nearby_pixels += c4
+    if c5 != white:
+        nearby_pixels += c5
+    if c6 != white:
+        nearby_pixels += c6
+    if c7 != white:
+        nearby_pixels += c7
+    if c8 != white:
+        nearby_pixels += c8
+    
+    if len(nearby_pixels) > 1:
+        avg_red   = 0
+        avg_green = 0
+        avg_blue  = 0
+        for r in nearby_pixels:
+            avg_red   += r[0]
+            avg_green += r[1]
+            avg_blue  += r[2]
+        avg_red   = int(avg_red   / len(nearby_pixels))
+        avg_green = int(avg_green / len(nearby_pixels))
+        avg_blue  = int(avg_blue  / len(nearby_pixels))
 
-    avg_color = (avg_red, avg_blue, avg_blue)
-    return avg_color
+        avg_color = (avg_red, avg_blue, avg_blue)
+        return avg_color
+    else:
+        return random_color()
 
 def draw_random_pixel():
     pos = (randint(10, 790), randint(50, 790))
