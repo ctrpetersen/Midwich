@@ -49,26 +49,19 @@ def average_color_of_px(x,y):
     return avg_color
 
 def draw_random_pixel():
-    px_is_white = True
-
-    while px_is_white is True:
-        pos = (randint(0, screen_size[0]), randint(0, screen_size[1]))
-        px_color = game.display.get_at(pos)[:3]
-        if
-
-
-
-
-
-pygame.draw.rect(game_display, random_color(), [50,50,100,100])
-
-print(average_color_of_px(70,70))
+    pos = (randint(10, 790), randint(50, 790))
+    px_color = game_display.get_at(pos)[:3]
+    if px_color == white:
+        avg_color = average_color_of_px(pos[0], pos[1])
+        print(str(avg_color))
+        pygame.draw.rect(game_display, avg_color, [pos[0], pos[1],2,2])
 
 game_exit = False
 while not game_exit:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_exit = True
+    draw_random_pixel()
     pygame.display.update()
 
 pygame.quit()
