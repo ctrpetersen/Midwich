@@ -2,30 +2,48 @@ import pygame
 import sys
 from random import randint
 
+white = (255,255,255)
+
+color_weight = 1.1
+game_display = pygame.display.set_mode((800,800))
+game_display.fill(white)
+clock = pygame.time.Clock()
+
 def random_color():
     r = randint(0, 255)
     g = randint(0, 255)
     b = randint(0, 255)
     return (r,g,b)
 
-red = (255,0,0)
-white = (255,255,255)
-black= (0,0,0)
+#GRID
+#   123
+#   4P5
+#   678
 
-pygame.display.set_caption("slither game")
-game_display = pygame.display.set_mode((800,800))
-game_display.fill(white)
+#Read nearby pixels
+def average_color_of_px(x,y):
+    nearby_pixels = []
+    c1 = game_display.get_at((x-1,y+1))[:3]
+    c2 = game_display.get_at((x,y+1))[:3]
+    c3 = game_display.get_at((x+1,y+1))[:3]
+    c4 = game_display.get_at((x-1,y))[:3]
+    c5 = game_display.get_at((x+1,y))[:3]
+    c6 = game_display.get_at((x-1,y-1))[:3]
+    c7 = game_display.get_at((x,y-1))[:3]
+    c8 = game_display.get_at((x+1,y-1))[:3]
+    nearby_pixels += c1,c2,c3,c4,c5,c6,c7,c8
+    return nearby_pixels
 
-clock = pygame.time.Clock()
+pygame.draw.rect(game_display, random_color(), [50,50,100,100])
+
+print(average_color_of_px(50,50))
 
 game_exit = False
 while not game_exit:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_exit = True
-    pygame.draw.rect(game_display, random_color(), [randint(0,800),randint(0,800),2,2])
     pygame.display.update()
-    #clock.tick(120)
 
 pygame.quit()
 sys.exit()
