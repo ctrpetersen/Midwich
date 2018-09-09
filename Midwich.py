@@ -1,5 +1,4 @@
 import pygame
-import sys
 from random import randint
 import numpy as np
 
@@ -25,30 +24,57 @@ def initial_seed():
             for yo in range(-1, 1):
                 pygame.draw.rect(game_display, random_color(), [is_x + xo, is_y + yo, 1, 1])
 
-#Returns the color of a nearby non-white pixel
 def can_place_pixel(x,y):
+    '''
+    Returns true if pos is next (north, west, east, south) to a non-white pixel
+    '''
     px = []
     can_place = False
-    c1 = game_display.get_at((x-1,y+1))[:3]
-    c2 = game_display.get_at((x,y+1))[:3]
-    c3 = game_display.get_at((x+1,y+1))[:3]
-    c4 = game_display.get_at((x-1,y))[:3]
-    c5 = game_display.get_at((x+1,y))[:3]
-    c6 = game_display.get_at((x-1,y-1))[:3]
-    c7 = game_display.get_at((x,y-1))[:3]
-    c8 = game_display.get_at((x+1,y-1))[:3]
-    px += c1,c2,c3,c4,c5,c6,c7,c8
+    n = game_display.get_at((x,y+1))[:3]
+    w = game_display.get_at((x-1,y))[:3]
+    e = game_display.get_at((x+1,y))[:3]
+    s = game_display.get_at((x,y-1))[:3]
+    px += n, w, e, s
 
     for p in px:
         if p != white:
             can_place = True
     return can_place
 
+def place_random_pixel():
+    '''
+    Places a random pixel next to a non-white pixel.
+    '''
+    can_place = False
+    times_tried = 0
+    x = 0
+    y = 0
+    while can_place == False:
+        x = randint(50, 950)
+        y = randint(50, 950)
+        can_place = can_place_pixel(x, y)
+        times_tried += 1
+    
+    color_of_nearby_pixel = (0, 0, 0)
+    if  game_display.get_at((x,y+1))[:3] != white:
+        color_of_nearby_pixel = game_display.get_at((x,y+1))[:3]
+    elif game_display.get_at((x-1,y))[:3] != white:
+        color_of_nearby_pixel = game_display.get_at((x-1,y))[:3]
+    elif game_display.get_at((x+1,y))[:3] != white:
+        color_of_nearby_pixel = game_display.get_at((x+1,y))[:3]
+    else:
+        color_of_nearby_pixel = game_display.get_at((x,y-1))[:3]
+    pygame.draw.rect(game_display, color_of_nearby_pixel, [x, y, 1, 1])
+    print(f'Found a place to put pixel - at {x, y}, tried {times_tried} times.')
+
+    
+
+
 
 #GRID
-#   123
-#   4P5
-#   678
+#   0N0
+#   WPE
+#   0S0
 #Read nearby pixels
 def average_color_of_px(x,y):
     c1 = game_display.get_at((x-1,y+1))[:3]
@@ -108,13 +134,13 @@ def draw_random_pixel():
 
 #pygame.draw.rect(game_display, random_color(), [50, 50, 500, 500])
 initial_seed()
+#place_random_pixel()
 game_exit = False
 while not game_exit:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_exit = True
-    #draw_random_pixel()
+    place_random_pixel()
     pygame.display.update()
 
 pygame.quit()
-sys.exit()
