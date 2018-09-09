@@ -65,7 +65,7 @@ def place_random_pixel():
     else:
         color_of_nearby_pixel = game_display.get_at((x,y-1))[:3]
     pygame.draw.rect(game_display, color_of_nearby_pixel, [x, y, pixel_size, pixel_size])
-    print(f'Found a place to put pixel - at {x, y}, tried {times_tried} times.')
+    #print(f'Found a place to put pixel - at {x, y}, tried {times_tried} times.')
 
     
 
