@@ -18,13 +18,14 @@ def random_color():
     return (r,g,b)
 
 def initial_seed():
-    middle_pos_width  = int(screen_size[0] / 2)
-    middle_pos_height = int(screen_size[1] / 2)
-    
-    for xo in range(-2, 3):
-        for yo in range(-2, 3):
-            pygame.draw.rect(game_display, random_color(), [middle_pos_height + xo, middle_pos_height + yo, 1, 1])
+    for i in range(0, 50):
+        is_x = randint(50, 950)
+        is_y = randint(50, 950)
+        for xo in range(-1, 1):
+            for yo in range(-1, 1):
+                pygame.draw.rect(game_display, random_color(), [is_x + xo, is_y + yo, 1, 1])
 
+#Returns the color of a nearby non-white pixel
 def can_place_pixel(x,y):
     px = []
     can_place = False
@@ -105,12 +106,7 @@ def draw_random_pixel():
         print(str(avg_color))
         pygame.draw.rect(game_display, avg_color, [pos[0], pos[1],2,2])
 
-
-
-
-
 #pygame.draw.rect(game_display, random_color(), [50, 50, 500, 500])
-print(can_place_pixel(100, 100))
 initial_seed()
 game_exit = False
 while not game_exit:
