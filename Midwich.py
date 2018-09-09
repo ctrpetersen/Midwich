@@ -4,7 +4,7 @@ import numpy as np
 
 white = (255,255,255)
 screen_size = (1000, 1000)
-
+pixel_size = 1
 color_weight = 1.1
 game_display = pygame.display.set_mode((screen_size))
 game_display.fill(white)
@@ -64,7 +64,7 @@ def place_random_pixel():
         color_of_nearby_pixel = game_display.get_at((x+1,y))[:3]
     else:
         color_of_nearby_pixel = game_display.get_at((x,y-1))[:3]
-    pygame.draw.rect(game_display, color_of_nearby_pixel, [x, y, 1, 1])
+    pygame.draw.rect(game_display, color_of_nearby_pixel, [x, y, pixel_size, pixel_size])
     print(f'Found a place to put pixel - at {x, y}, tried {times_tried} times.')
 
     
